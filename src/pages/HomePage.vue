@@ -70,7 +70,7 @@
         <div class="recent-entries">
           <h3>Dernière activité</h3>
           <div v-if="recentEntries.length === 0" class="empty-state">
-            Aucune activité enregistrée.
+            Aucune activité enregistrée. Dans le cas contraire, rafraichissez la page.
           </div>
           <div v-else class="entries-list">
             <div class="entry-item highlight">
@@ -191,7 +191,7 @@ export default {
     }
 
     const viewHistory = () => {
-      console.log('TODO: history')
+      router.push('/history')
     }
 
     const getTodayData = (type) => {
