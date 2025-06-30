@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@azure/msal-browser": "^4.13.2",
+    "chart.js": "^4.5.0",
     "core-js": "^3.8.3",
     "fs": "^0.0.1-security",
     "msal": "^1.4.18",
