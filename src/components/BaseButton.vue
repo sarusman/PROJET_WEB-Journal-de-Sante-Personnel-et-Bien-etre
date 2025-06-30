@@ -31,17 +31,19 @@ export default {
     }
   },
   computed: {
-    styleBouton() {
-      if (this.disabled) {
-        return {
-          backgroundColor: '#b2f2bb',
-          cursor: 'not-allowed'
-        };
-      }
+  styleBouton() {
+    const palette = colorPalette[this.color] || colorPalette['primary'];
+    if (this.disabled) {
       return {
-        '--hover-color': colorPalette[this.color].hoverBg
+        backgroundColor: '#b2f2bb',
+        cursor: 'not-allowed'
       };
     }
+    return {
+      '--hover-color': palette.hoverBg
+    };
+  }
+
   }
 };
 </script>
