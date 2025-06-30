@@ -22,6 +22,18 @@ const routes = [
     component: ConversationShowPage,
     meta: { requiresAuth: true },
     props: true
+  },
+  {
+    path: '/health-charts',
+    name: 'HealthCharts',
+    component: () => import('../src/pages/HealthChart.vue'), // Changé de HealthCharts.vue à HealthChart.vue
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/history',
+    name: 'History',
+    component: () => import('../src/pages/HistoryPage.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 
