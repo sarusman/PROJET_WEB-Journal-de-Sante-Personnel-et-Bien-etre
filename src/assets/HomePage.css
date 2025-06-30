@@ -424,3 +424,19 @@
     flex-direction: column;
   }
 }
+
+.entry-item.highlight {
+  background: #f0f9ff;
+  border-left: 4px solid #42b983;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.view-all {
+  background: none;
+  border: none;
+  color: #42b983;
+  cursor: pointer;
+  padding: 5px 0;
+  font-size: 0.9em;
+}

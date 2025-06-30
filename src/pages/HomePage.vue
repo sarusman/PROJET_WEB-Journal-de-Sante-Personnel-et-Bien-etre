@@ -68,20 +68,23 @@
         </div>
 
         <div class="recent-entries">
-          <h3>Entrées récentes</h3>
+          <h3>Dernière activité</h3>
           <div v-if="recentEntries.length === 0" class="empty-state">
-            Aucune entrée récente. Commencez votre journal !
+            Aucune activité enregistrée.
           </div>
           <div v-else class="entries-list">
-            <div v-for="entry in recentEntries" :key="entry.date" class="entry-item">
-              <strong>{{ formatDate(entry.date) }}</strong>
+            <div class="entry-item highlight">
+              <strong>{{ formatDate(recentEntries[0].date) }}</strong>
               <div>
-                <span v-if="entry.sleep">😴 {{ entry.sleep }}h</span>
-                <span v-if="entry.mood">😊 {{ entry.mood }}/10</span>
-                <span v-if="entry.activity">🏃 {{ entry.activity }} min</span>
-                <span v-if="entry.nutrition">🥗 {{ entry.nutrition }}</span>
+                <span v-if="recentEntries[0].sleep">😴 {{ recentEntries[0].sleep }}h</span>
+                <span v-if="recentEntries[0].mood">😊 {{ recentEntries[0].mood }}/10</span>
+                <span v-if="recentEntries[0].activity">🏃 {{ recentEntries[0].activity }} min</span>
+                <span v-if="recentEntries[0].nutrition">🥗 {{ recentEntries[0].nutrition }}</span>
               </div>
             </div>
+            <button @click="$router.push('/history')" class="view-all">
+              Voir l'historique complet →
+            </button>
           </div>
         </div>
       </div>
@@ -126,6 +129,7 @@ import SignInButton from '../components/SignInButton.vue'
 import AsyncButton from '../components/AsyncButton.vue'
 import '../assets/HomePage.css'
 import { HealthJournalService } from '../lib/HealthJournalService.js'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'HomePage',
@@ -133,6 +137,7 @@ export default {
   setup() {
     const store = useStore()
     const currentUser = computed(() => store.state.user)
+    const router = useRouter()
     const showEntryModal = ref(false)
     const userEntries = ref([])
     const newEntryData = ref({
@@ -182,7 +187,7 @@ export default {
     }
 
     const viewCharts = () => {
-      console.log('TODO: charts')
+      router.push('/health-charts')
     }
 
     const viewHistory = () => {
