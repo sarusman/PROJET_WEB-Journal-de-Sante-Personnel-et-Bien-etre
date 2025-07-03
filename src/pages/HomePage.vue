@@ -1,21 +1,5 @@
 <template>
   <div class="page-container">
-    <header class="header">
-      <nav class="nav-bar">
-        <div class="nav-left">
-          <h1 class="app-title">Journal Santé</h1>
-        </div>
-        <div class="nav-center">
-          <BaseButton><a href="#" class="nav-link active">Home</a></BaseButton>
-          <BaseButton><a href="#" class="nav-link">Conversations</a></BaseButton>
-          <BaseButton><a href="#" class="nav-link">About</a></BaseButton>
-        </div>
-        <div class="nav-right">
-          <SignInButton />
-        </div>
-      </nav>
-    </header>
-
     <!-- Actions rapides -->
     <div v-if="currentUser" class="top-actions">
       <div class="action-buttons-top">
@@ -82,7 +66,7 @@
                 <span v-if="recentEntries[0].nutrition">🥗 {{ recentEntries[0].nutrition }}</span>
               </div>
             </div>
-            <button @click="$router.push('/history')" class="view-all">
+            <button @click="viewHistory" class="view-all">
               Voir l'historique complet →
             </button>
           </div>
@@ -124,20 +108,17 @@
 <script>
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import BaseButton from '../components/BaseButton.vue'
-import SignInButton from '../components/SignInButton.vue'
 import AsyncButton from '../components/AsyncButton.vue'
-import '../assets/HomePage.css'
 import { HealthJournalService } from '../lib/HealthJournalService.js'
 import { useRouter } from 'vue-router'
 
 export default {
   name: 'HomePage',
-  components: { BaseButton, SignInButton, AsyncButton },
+  components: { AsyncButton },
   setup() {
     const store = useStore()
-    const currentUser = computed(() => store.state.user)
     const router = useRouter()
+    const currentUser = computed(() => store.state.user)
     const showEntryModal = ref(false)
     const userEntries = ref([])
     const newEntryData = ref({
@@ -191,7 +172,7 @@ export default {
     }
 
     const viewHistory = () => {
-      console.log('TODO: history')
+      router.push('/history')
     }
 
     const getTodayData = (type) => {
@@ -235,3 +216,175 @@ export default {
 }
 </script>
 
+<style scoped>
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.top-actions {
+  margin-bottom: 20px;
+}
+
+.action-buttons-top {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.user-welcome {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.welcome-section {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.hero h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.feature-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.feature-card .emoji {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.dashboard {
+  margin-top: 30px;
+}
+
+.today-summary h3, .recent-entries h3 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.entry-item.highlight {
+  background: #f0f9ff;
+  border-left: 4px solid #42b983;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.view-all {
+  background: none;
+  border: none;
+  color: #42b983;
+  cursor: pointer;
+  padding: 5px 0;
+  font-size: 0.9em;
+}
+
+.empty-state {
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  text-align: center;
+  color: #666;
+}
+
+/* Styles du modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-buttons button[type="button"] {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+}
+
+.modal-buttons button[type="submit"] {
+  background: #42b983;
+  color: white;
+  border: none;
+}
+</style>
