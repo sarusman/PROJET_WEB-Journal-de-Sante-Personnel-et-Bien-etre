@@ -3,11 +3,12 @@ export class HealthJournalService {
     this.api = apiBase
   }
 
-  // get entries from API
   async getUserEntries(email) {
     try {
       const res = await fetch(`${this.api}/entries/${email}`)
-      return await res.json()
+      const entries = await res.json()
+      // Trier par createdAt descendant (le plus récent en premier)
+      return entries.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     } catch (e) {
       console.error("API get error", e)
       return []
@@ -17,13 +18,15 @@ export class HealthJournalService {
   // save/update entry to API
   async saveUserEntry(email, entry) {
     try {
-      await fetch(`${this.api}/entries/${email}`, {
+      const response = await fetch(`${this.api}/entries/${email}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(entry)
       })
+      return await response.json() // Retourne l'entrée sauvegardée
     } catch (e) {
       console.error("API save error", e)
+      throw e
     }
   }
 
