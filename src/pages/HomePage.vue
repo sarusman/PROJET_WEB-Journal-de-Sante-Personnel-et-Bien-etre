@@ -4,8 +4,6 @@
     <div v-if="currentUser" class="top-actions">
       <div class="action-buttons-top">
         <AsyncButton color="primary" @click="newEntry">📝 Nouvelle entrée</AsyncButton>
-        <AsyncButton color="success" @click="viewCharts">📊 Voir graphiques</AsyncButton>
-        <AsyncButton color="info" @click="viewHistory">📅 Historique</AsyncButton>
       </div>
     </div>
 
