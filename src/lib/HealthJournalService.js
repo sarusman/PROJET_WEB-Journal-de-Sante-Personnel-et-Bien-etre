@@ -30,8 +30,49 @@ export class HealthJournalService {
     }
   }
 
-  async deleteUserEntry() {
-    console.warn("deleteUserEntry: not implemented on server")
+  async updateUserEntry(email, entry) {
+    try {
+      if (!entry.id) {
+        throw new Error("Entry ID is required for update");
+      }
+      
+      const response = await fetch(`${this.api}/entries/${email}/${entry.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(entry)
+      });
+      
+      if (!response.ok) throw new Error("Update failed");
+      return await response.json();
+    } catch (e) {
+      console.error("API update error", e);
+      throw e;
+    }
+  }
+
+  async deleteUserEntry(email, entry) {
+    try {
+      // Vérification plus robuste de l'ID
+      const entryId = entry.id || (entry._id && entry._id.$oid) || entry._id;
+      if (!entryId) {
+        throw new Error("Impossible de trouver l'ID de l'entrée à supprimer");
+      }
+
+      const response = await fetch(`${this.api}/entries/${email}/${entryId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" }
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Échec de la suppression");
+      }
+      
+      return await response.json();
+    } catch (e) {
+      console.error("Erreur API delete:", e);
+      throw new Error(`Erreur lors de la suppression: ${e.message}`);
+    }
   }
 
   // stats
@@ -94,7 +135,6 @@ export class HealthJournalService {
     return { timeSeries, correlation }
   }
 
-  // trend calc
   calculateCorrelation(data) {
     if (data.length < 2) return 0
     const n = data.length
