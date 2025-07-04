@@ -43,12 +43,5 @@ export default {
 </script>
 
 <style scoped>
-.signin-button {
-  background-color: #107c10;
-  color: white;
-  font-weight: bold;
-  padding: 10px 15px;
-  border: none;
-  cursor: pointer;
-}
+  @import '@/assets/CSS/SignInButton.css';
 </style>

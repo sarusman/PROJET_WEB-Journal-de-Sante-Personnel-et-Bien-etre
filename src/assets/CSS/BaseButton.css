@@ -1,0 +1,29 @@
+.button {
+  color: white;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 5px;
+  transition: transform 0.2s, background-color 0.2s;
+  border: none;
+}
+
+.button.primary {
+  background-color: #42b983;
+}
+.button.warn {
+  background-color: #ff5722;
+}
+.button.danger {
+  background-color: #e53935;
+}
+
+.button:hover:not(:disabled),
+.button:focus:not(:disabled) {
+  transform: scale(1.05);
+  background-color: var(--hover-color);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+}
