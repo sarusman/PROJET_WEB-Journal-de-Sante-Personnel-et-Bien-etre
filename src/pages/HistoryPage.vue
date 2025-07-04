@@ -36,37 +36,70 @@
       </div>
 
       <div v-else class="entries-list">
-        <div v-for="entry in filteredEntries" :key="entry.date" class="entry-card">
-          <div class="entry-date">{{ formatDate(entry.date) }}</div>
+        <div v-for="entry in filteredEntries" :key="entry.id" class="entry-card">
+          <div class="entry-header">
+            <div class="entry-date">{{ formatDate(entry.date) }}</div>
+            <div class="entry-time" v-if="entry.time">{{ entry.time }}</div>
+          </div>
           
           <div class="entry-details">
             <div v-if="entry.sleep" class="detail-item">
               <span class="emoji">😴</span>
               <span class="value">{{ entry.sleep }}h</span>
-              <span class="label">Sommeil</span>
             </div>
             
             <div v-if="entry.mood" class="detail-item">
               <span class="emoji">😊</span>
               <span class="value">{{ entry.mood }}/10</span>
-              <span class="label">Humeur</span>
             </div>
             
             <div v-if="entry.activity" class="detail-item">
               <span class="emoji">🏃</span>
               <span class="value">{{ entry.activity }} min</span>
-              <span class="label">Activité</span>
             </div>
             
             <div v-if="entry.nutrition" class="detail-item">
               <span class="emoji">🥗</span>
               <span class="value">{{ entry.nutrition }}</span>
-              <span class="label">Alimentation</span>
             </div>
           </div>
           
-          <button class="edit-btn" @click="editEntry(entry)">✏️</button>
+          <button class="edit-btn" @click="editEntry(entry)">✏️</button>        
         </div>
+      </div>
+    </div>
+
+    <!-- Modal d'édition -->
+    <div v-if="showEditModal" class="modal-overlay" @click="closeEditModal">
+      <div class="modal-content" @click.stop>
+        <h3>Modifier l'entrée du {{ formatDate(editingEntry.date) }}</h3>
+        <form @submit.prevent="saveEditedEntry">
+          <div class="form-group">
+            <label>😴 Sommeil (heures)</label>
+            <input v-model.number="editingEntry.sleep" type="number" min="0" max="24" step="0.5">
+          </div>
+          <div class="form-group">
+            <label>😊 Humeur (1-10)</label>
+            <input v-model.number="editingEntry.mood" type="number" min="1" max="10">
+          </div>
+          <div class="form-group">
+            <label>🏃 Activité (minutes)</label>
+            <input v-model.number="editingEntry.activity" type="number" min="0">
+          </div>
+          <div class="form-group">
+            <label>🥗 Alimentation</label>
+            <textarea v-model="editingEntry.nutrition"></textarea>
+          </div>
+          <div class="form-group" v-if="editingEntry.time">
+            <label>⏰ Heure</label>
+            <input v-model="editingEntry.time" type="time">
+          </div>
+          <div class="modal-buttons">
+            <button type="button" @click="closeEditModal" class="cancel-btn">Annuler</button>
+            <button type="button" @click="deleteEntry" class="delete-btn">Supprimer</button>
+            <button type="submit" class="save-btn">Enregistrer</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -87,13 +120,21 @@ export default {
     const entryType = ref('all')
     const isLoading = ref(false)
     const allEntries = ref([])
+    const showEditModal = ref(false)
+    const editingEntry = ref(null)
 
     const loadEntries = async () => {
       if (!store.state.user) return
       
       isLoading.value = true
       try {
-        allEntries.value = await healthService.getUserEntries(store.state.user.username)
+        const entries = await healthService.getUserEntries(store.state.user.username)
+        // Trier par date et heure décroissantes
+        allEntries.value = entries.sort((a, b) => {
+          const dateA = new Date(`${a.date}T${a.time || '00:00'}`)
+          const dateB = new Date(`${b.date}T${b.time || '00:00'}`)
+          return dateB - dateA
+        })
       } catch (error) {
         console.error("Erreur de chargement", error)
       } finally {
@@ -116,7 +157,7 @@ export default {
         entries = entries.filter(e => e[entryType.value] !== undefined && e[entryType.value] !== null)
       }
       
-      return entries.sort((a, b) => new Date(b.date) - new Date(a.date))
+      return entries
     })
 
     const formatDate = (dateStr) => {
@@ -128,9 +169,43 @@ export default {
     }
 
     const editEntry = (entry) => {
-      // Implémentez la logique d'édition ici
-      console.log("Éditer l'entrée", entry)
+      editingEntry.value = JSON.parse(JSON.stringify(entry)) // Deep copy
+      showEditModal.value = true
     }
+
+    const closeEditModal = () => {
+      showEditModal.value = false
+    }
+
+    const saveEditedEntry = async () => {
+      try {
+        if (editingEntry.value.id) {
+          // Mettre à jour l'entrée existante
+          await healthService.updateUserEntry(store.state.user.username, editingEntry.value);
+        } else {
+          // Créer une nouvelle entrée
+          await healthService.saveUserEntry(store.state.user.username, editingEntry.value);
+        }
+        await loadEntries();
+        closeEditModal();
+      } catch (error) {
+        console.error("Erreur lors de la sauvegarde", error);
+        alert("Erreur lors de la sauvegarde: " + error.message);
+      }
+    };
+
+    const deleteEntry = async () => {
+      if (confirm("Voulez-vous vraiment supprimer cette entrée ?")) {
+        try {
+          await healthService.deleteUserEntry(store.state.user.username, editingEntry.value);
+          await loadEntries();
+          closeEditModal();
+        } catch (error) {
+          console.error("Erreur lors de la suppression", error);
+          alert("Erreur lors de la suppression: " + error.message);
+        }
+      }
+    };
 
     onMounted(() => {
       loadEntries()
@@ -141,9 +216,14 @@ export default {
       entryType,
       isLoading,
       filteredEntries,
+      showEditModal,
+      editingEntry,
       loadEntries,
       formatDate,
-      editEntry
+      editEntry,
+      closeEditModal,
+      saveEditedEntry,
+      deleteEntry
     }
   }
 }
