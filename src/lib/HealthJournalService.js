@@ -7,7 +7,6 @@ export class HealthJournalService {
     try {
       const res = await fetch(`${this.api}/entries/${email}`)
       const entries = await res.json()
-      // Trier par createdAt descendant (le plus récent en premier)
       return entries.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     } catch (e) {
       console.error("API get error", e)
@@ -15,7 +14,6 @@ export class HealthJournalService {
     }
   }
 
-  // save/update entry to API
   async saveUserEntry(email, entry) {
     try {
       const response = await fetch(`${this.api}/entries/${email}`, {
@@ -23,7 +21,7 @@ export class HealthJournalService {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(entry)
       })
-      return await response.json() // Retourne l'entrée sauvegardée
+      return await response.json()
     } catch (e) {
       console.error("API save error", e)
       throw e
@@ -52,7 +50,6 @@ export class HealthJournalService {
 
   async deleteUserEntry(email, entry) {
     try {
-      // Vérification plus robuste de l'ID
       const entryId = entry.id || (entry._id && entry._id.$oid) || entry._id;
       if (!entryId) {
         throw new Error("Impossible de trouver l'ID de l'entrée à supprimer");

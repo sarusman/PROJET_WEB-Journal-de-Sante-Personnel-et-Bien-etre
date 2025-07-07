@@ -7,7 +7,7 @@ import { PublicClientApplication } from '@azure/msal-browser'
 
 const msalConfig = {
   auth: {
-    clientId: process.env.VUE_APP_OAUTH_CLIENT_ID,  // mis dans .env
+    clientId: process.env.VUE_APP_OAUTH_CLIENT_ID,
     authority: 'https://login.microsoftonline.com/common',
     redirectUri: window.location.origin
   }

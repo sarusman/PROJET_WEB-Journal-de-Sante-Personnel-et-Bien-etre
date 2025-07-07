@@ -10,7 +10,6 @@
 </template>
 
 <script>
-// Pour le HOOVER (sujet)
 const colorPalette = {
   primary: { bg: '#42b983', hoverBg: '#4cce93', focusBorder: '#47d696' },
   warn: { bg: '#ff5722', hoverBg: '#ff7043', focusBorder: '#ff8a65' },

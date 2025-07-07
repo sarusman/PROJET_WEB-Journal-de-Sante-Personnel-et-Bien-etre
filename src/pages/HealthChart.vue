@@ -17,25 +17,21 @@
     </div>
 
     <div class="charts-container">
-      <!-- Graphique de sommeil -->
       <div class="chart-card">
         <h2>Sommeil (heures)</h2>
         <canvas ref="sleepChart"></canvas>
       </div>
 
-      <!-- Graphique d'activité -->
       <div class="chart-card">
         <h2>Activité (minutes)</h2>
         <canvas ref="activityChart"></canvas>
       </div>
 
-      <!-- Graphique d'humeur -->
       <div class="chart-card">
         <h2>Humeur (1-10)</h2>
         <canvas ref="moodChart"></canvas>
       </div>
 
-      <!-- Graphique combiné -->
       <div class="chart-card full-width">
         <h2>Synthèse</h2>
         <canvas ref="combinedChart"></canvas>

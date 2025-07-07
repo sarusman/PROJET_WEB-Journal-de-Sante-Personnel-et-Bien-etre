@@ -9,9 +9,14 @@ const routes = [
     component: HomePage
   },
   {
+    path: '/about',
+    name: 'About',
+    component: () => import('../src/pages/AboutPage.vue')
+  },
+  {
     path: '/health-charts',
     name: 'HealthCharts',
-    component: () => import('../src/pages/HealthChart.vue'), // Changé de HealthCharts.vue à HealthChart.vue
+    component: () => import('../src/pages/HealthChart.vue'),
     meta: { requiresAuth: true }
   },
   {

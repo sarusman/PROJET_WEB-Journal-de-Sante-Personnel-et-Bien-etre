@@ -1,6 +1,5 @@
 <template>
   <div class="page-container">
-    <!-- Actions rapides -->
     <div v-if="currentUser" class="top-actions">
       <div class="action-buttons-top">
         <AsyncButton color="primary" @click="newEntry">📝 Nouvelle entrée</AsyncButton>
@@ -72,7 +71,6 @@
       </div>
     </main>
 
-    <!-- Modal -->
     <div v-if="showEntryModal" class="modal-overlay" @click="closeModal">
       <div class="modal-content" @click.stop>
         <h3>Nouvelle entrée - {{ formatDate(new Date()) }}</h3>

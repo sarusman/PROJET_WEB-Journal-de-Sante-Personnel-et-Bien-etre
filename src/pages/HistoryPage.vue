@@ -65,40 +65,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Modal d'édition -->
-    <div v-if="showEditModal" class="modal-overlay" @click="closeEditModal">
-      <div class="modal-content" @click.stop>
-        <h3>Modifier l'entrée du {{ formatDate(editingEntry.date) }}</h3>
-        <form @submit.prevent="saveEditedEntry">
-          <div class="form-group">
-            <label>😴 Sommeil (heures)</label>
-            <input v-model.number="editingEntry.sleep" type="number" min="0" max="24" step="0.5">
-          </div>
-          <div class="form-group">
-            <label>😊 Humeur (1-10)</label>
-            <input v-model.number="editingEntry.mood" type="number" min="1" max="10">
-          </div>
-          <div class="form-group">
-            <label>🏃 Activité (minutes)</label>
-            <input v-model.number="editingEntry.activity" type="number" min="0">
-          </div>
-          <div class="form-group">
-            <label>🥗 Alimentation</label>
-            <textarea v-model="editingEntry.nutrition"></textarea>
-          </div>
-          <div class="form-group" v-if="editingEntry.time">
-            <label>⏰ Heure</label>
-            <input v-model="editingEntry.time" type="time">
-          </div>
-          <div class="modal-buttons">
-            <button type="button" @click="closeEditModal" class="cancel-btn">Annuler</button>
-            <button type="button" @click="deleteEntry" class="delete-btn">Supprimer</button>
-            <button type="submit" class="save-btn">Enregistrer</button>
-          </div>
-        </form>
-      </div>
-    </div>
   </div>
 </template>
 

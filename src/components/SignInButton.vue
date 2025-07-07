@@ -18,8 +18,7 @@ export default {
   name: "SignInButton",
   setup() {
     const store = useStore();
-    const { proxy } = getCurrentInstance(); // pour accéder à $msal
-
+    const { proxy } = getCurrentInstance();
     const signIn = async () => {
       console.log("SignInButton cliqué!");
       try {

@@ -1,5 +1,3 @@
-// src/composables/useHistoryPage.js
-
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { HealthJournalService } from '../lib/HealthJournalService.js'
