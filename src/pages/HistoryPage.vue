@@ -2,7 +2,6 @@
   <div class="history-page">
     <header class="header">
       <h1>Historique Complet</h1>
-      <BaseButton @click="$router.push('/')">Retour à l'accueil</BaseButton>
     </header>
 
     <div class="filters">
@@ -63,8 +62,6 @@
               <span class="value">{{ entry.nutrition }}</span>
             </div>
           </div>
-          
-          <button class="edit-btn" @click="editEntry(entry)">✏️</button>        
         </div>
       </div>
     </div>

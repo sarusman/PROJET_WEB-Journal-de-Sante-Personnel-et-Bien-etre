@@ -2,7 +2,6 @@
   <div class="health-charts-page">
     <header class="header">
       <h1>Vos Statistiques de Santé</h1>
-      <BaseButton @click="$router.push('/')">Retour à l'accueil</BaseButton>
     </header>
 
     <div class="chart-filters">
