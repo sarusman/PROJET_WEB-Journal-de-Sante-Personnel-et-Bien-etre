@@ -52,6 +52,7 @@ export function useHomePage() {
     newEntryData.value = { sleep: '', mood: '', activity: '', nutrition: '' }
   }
 
+  
   const closeModal = () => {
     showEntryModal.value = false
   }
