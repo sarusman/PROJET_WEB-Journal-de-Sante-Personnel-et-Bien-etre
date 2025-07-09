@@ -16,6 +16,8 @@ export function useHomePage() {
     nutrition: ''
   })
   const healthService = new HealthJournalService()
+  const suggestion = ref("")
+
 
   const loadUserData = async () => {
     if (currentUser.value) {
@@ -27,6 +29,7 @@ export function useHomePage() {
   onMounted(async () => {
     if (currentUser.value) {
       await loadUserData()
+      suggestion.value = await getSuggestion()
     }
   })
 
@@ -44,6 +47,7 @@ export function useHomePage() {
     }
     await healthService.saveUserEntry(currentUser.value.username, entry)
     userEntries.value.unshift(entry)
+    suggestion.value = await getSuggestion()
     closeModal()
   }
 
@@ -86,6 +90,37 @@ export function useHomePage() {
     return new Date(date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
   }
 
+  const getSuggestion = async () => {
+    if (!currentUser.value) return null;
+
+    const today = new Date().toISOString().split("T")[0];
+    const todayEntry = userEntries.value.find(e => e.date === today);
+    console.log("today = ", today, "\nclé en clair = ",process.env.VUE_APP_OPENAI_API_KEY)
+    if (!todayEntry) return "Aucune donnée pour aujourd’hui.";
+
+    const prompt = `User ${currentUser.value.name} : sommeil=${todayEntry.sleep}h, activité=${todayEntry.activity}min, humeur=${todayEntry.mood}/10, repas="${todayEntry.nutrition}". Suggère un conseil lifestyle en 1 ligne.`;
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.VUE_APP_OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-4",
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 60,
+        temperature: 0.7
+      })
+    });
+
+    
+    const data = await response.json();
+    console.log("JSON ia: ", data)
+    console.log("JSON ia: ", data.choices?.[0]?.message?.content)
+    return data.choices?.[0]?.message?.content || "Pas de suggestion, état optimal.";
+  }
+
   return {
     currentUser,
     showEntryModal,
@@ -98,6 +133,8 @@ export function useHomePage() {
     getTodayData,
     viewCharts,
     viewHistory,
+    getSuggestion,
+    suggestion,
     formatDate
   }
 }

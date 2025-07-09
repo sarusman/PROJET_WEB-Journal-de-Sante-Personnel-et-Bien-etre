@@ -47,6 +47,10 @@
             </div>
           </div>
         </div>
+        <div class="lifestyle-suggestion">
+          <h4>💡 Suggestion bien-être</h4>
+          <p>{{ suggestion || 'Chargement...' }}</p>
+        </div>
 
         <div class="recent-entries">
           <h3>Dernier Enregistrement</h3>
