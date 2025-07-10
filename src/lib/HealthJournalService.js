@@ -8,6 +8,7 @@ export class HealthJournalService {
       const res = await fetch(`${this.api}/entries/${email}`)
       const entries = await res.json()
       return entries.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+
     } catch (e) {
       console.error("API get error", e)
       return []
@@ -17,6 +18,7 @@ export class HealthJournalService {
   async saveUserEntry(email, entry) {
     try {
       const response = await fetch(`${this.api}/entries/${email}`, {
+
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(entry)
@@ -70,6 +72,7 @@ export class HealthJournalService {
       console.error("Erreur API delete:", e);
       throw new Error(`Erreur lors de la suppression: ${e.message}`);
     }
+
   }
 
   // stats
@@ -131,7 +134,6 @@ export class HealthJournalService {
 
     return { timeSeries, correlation }
   }
-
   calculateCorrelation(data) {
     if (data.length < 2) return 0
     const n = data.length

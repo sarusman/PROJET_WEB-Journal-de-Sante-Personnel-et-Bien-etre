@@ -1,5 +1,6 @@
 <template>
   <div class="page-container">
+
     <div v-if="currentUser" class="top-actions">
       <div class="action-buttons-top">
         <AsyncButton color="primary" @click="newEntry">📝 Nouvelle entrée</AsyncButton>
@@ -47,6 +48,7 @@
             </div>
           </div>
         </div>
+
         <div class="lifestyle-suggestion">
           <h4>💡 Suggestion bien-être</h4>
           <p>{{ suggestion || 'Chargement...' }}</p>
@@ -56,6 +58,7 @@
           <h3>Dernier Enregistrement</h3>
           <div v-if="recentEntries.length === 0" class="empty-state">
             Aucun enregistrement.
+
           </div>
           <div v-else class="entries-list">
             <div class="entry-item highlight">
@@ -74,6 +77,7 @@
         </div>
       </div>
     </main>
+
 
     <div v-if="showEntryModal" class="modal-overlay" @click="closeModal">
       <div class="modal-content" @click.stop>
@@ -106,13 +110,18 @@
 </template>
 
 <script>
-import { useHomePage } from '../lib/HomePageScript.js'
-import AsyncButton from '../components/AsyncButton.vue'
 
+import { useHomePage } from '../lib/HomePageScript.js'
+
+import AsyncButton from '../components/AsyncButton.vue'
+import { HealthJournalService } from '../lib/HealthJournalService.js'
+import { useRouter } from 'vue-router'
+import '../assets/HomePage.css'
 export default {
   name: 'HomePage',
   components: { AsyncButton },
   setup() {
+
     return useHomePage()
   }
 }

@@ -2,6 +2,7 @@
   <div class="health-charts-page">
     <header class="header">
       <h1>Vos Statistiques de Santé</h1>
+
     </header>
 
     <div class="chart-filters">
@@ -17,6 +18,7 @@
     </div>
 
     <div class="charts-container">
+
       <div class="chart-card">
         <h2>Sommeil (heures)</h2>
         <canvas ref="sleepChart"></canvas>
@@ -27,10 +29,12 @@
         <canvas ref="activityChart"></canvas>
       </div>
 
+
       <div class="chart-card">
         <h2>Humeur (1-10)</h2>
         <canvas ref="moodChart"></canvas>
       </div>
+
 
       <div class="chart-card full-width">
         <h2>Synthèse</h2>
@@ -41,11 +45,14 @@
 </template>
 
 <script>
+
 import useHealthCharts from '../lib/HealthChartScript.js'
+
 
 export default {
   name: 'HealthCharts',
   setup() {
+
     return useHealthCharts()
   }
 }
@@ -55,5 +62,3 @@ export default {
 <style scoped>
   @import '@/assets/CSS/HealthCharts.css';
 </style>
-
-
