@@ -114,8 +114,7 @@
 import { useHomePage } from '../lib/HomePageScript.js'
 
 import AsyncButton from '../components/AsyncButton.vue'
-import { HealthJournalService } from '../lib/HealthJournalService.js'
-import { useRouter } from 'vue-router'
+
 import '../assets/HomePage.css'
 export default {
   name: 'HomePage',
