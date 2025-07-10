@@ -1,0 +1,124 @@
+.history-page {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+select {
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+  font-size: 0.95rem;
+}
+
+.entries-container {
+  margin-top: 2rem;
+}
+
+.entry-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-left: 4px solid #42b983;
+}
+
+.entry-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.entry-date {
+  font-weight: 600;
+  min-width: 180px;
+  color: #2c3e50;
+  font-size: 1.05rem;
+}
+
+.entry-details {
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(66, 185, 131, 0.1);
+  padding: 8px 12px;
+  border-radius: 20px;
+}
+
+.emoji {
+  font-size: 1.2em;
+}
+
+.value {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.label {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.edit-btn {
+  background: rgba(66, 185, 131, 0.1);
+  border: none;
+  color: #42b983;
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+.edit-btn:hover {
+  background: #42b983;
+  color: white;
+  transform: rotate(10deg);
+}
+
+.loading, .empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.empty-state::before {
+  content: "📊";
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 1rem;
+}

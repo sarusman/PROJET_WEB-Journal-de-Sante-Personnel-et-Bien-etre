@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '../src/pages/HomePage.vue'
-import ConversationShowPage from '../src/pages/ConversationShowPage.vue'
-import ConversationsIndexPage from '../src/pages/ConversationsIndexPage.vue'
 import store from '@/store'
 
 const routes = [
@@ -11,22 +9,14 @@ const routes = [
     component: HomePage
   },
   {
-    path: '/conversations',
-    name: 'Conversations',
-    component: ConversationsIndexPage,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/conversations/:id',
-    name: 'ConversationShow',
-    component: ConversationShowPage,
-    meta: { requiresAuth: true },
-    props: true
+    path: '/about',
+    name: 'About',
+    component: () => import('../src/pages/AboutPage.vue')
   },
   {
     path: '/health-charts',
     name: 'HealthCharts',
-    component: () => import('../src/pages/HealthChart.vue'), // Changé de HealthCharts.vue à HealthChart.vue
+    component: () => import('../src/pages/HealthChart.vue'),
     meta: { requiresAuth: true }
   },
   {

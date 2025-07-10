@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <!-- Actions rapides -->
+
     <div v-if="currentUser" class="top-actions">
       <div class="action-buttons-top">
         <AsyncButton color="primary" @click="newEntry">📝 Nouvelle entrée</AsyncButton>
@@ -49,10 +49,16 @@
           </div>
         </div>
 
+        <div class="lifestyle-suggestion">
+          <h4>💡 Suggestion bien-être</h4>
+          <p>{{ suggestion || 'Chargement...' }}</p>
+        </div>
+
         <div class="recent-entries">
-          <h3>Dernière activité</h3>
+          <h3>Dernier Enregistrement</h3>
           <div v-if="recentEntries.length === 0" class="empty-state">
-            Aucune activité enregistrée.
+            Aucun enregistrement.
+
           </div>
           <div v-else class="entries-list">
             <div class="entry-item highlight">
@@ -72,7 +78,7 @@
       </div>
     </main>
 
-    <!-- Modal -->
+
     <div v-if="showEntryModal" class="modal-overlay" @click="closeModal">
       <div class="modal-content" @click.stop>
         <h3>Nouvelle entrée - {{ formatDate(new Date()) }}</h3>
@@ -104,8 +110,9 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
+
+import { useHomePage } from '../lib/HomePageScript.js'
+
 import AsyncButton from '../components/AsyncButton.vue'
 import { HealthJournalService } from '../lib/HealthJournalService.js'
 import { useRouter } from 'vue-router'
@@ -114,103 +121,12 @@ export default {
   name: 'HomePage',
   components: { AsyncButton },
   setup() {
-    const store = useStore()
-    const router = useRouter()
-    const currentUser = computed(() => store.state.user)
-    const showEntryModal = ref(false)
-    const userEntries = ref([])
-    const newEntryData = ref({
-      sleep: '',
-      mood: '',
-      activity: '',
-      nutrition: ''
-    })
-    const healthService = new HealthJournalService()
 
-    const loadUserData = async () => {
-      if (currentUser.value) {
-        userEntries.value = await healthService.getUserEntries(currentUser.value.username)
-      }
-    }
-
-    onMounted(async () => {
-      if (currentUser.value) {
-        await loadUserData()
-      }
-    })
-
-    const saveEntry = async () => {
-      if (!currentUser.value) return
-
-      const today = new Date().toISOString().split("T")[0]
-      const entry = {
-        date: today,
-        sleep: newEntryData.value.sleep ? parseFloat(newEntryData.value.sleep) : null,
-        mood: newEntryData.value.mood ? parseInt(newEntryData.value.mood) : null,
-        activity: newEntryData.value.activity ? parseInt(newEntryData.value.activity) : null,
-        nutrition: newEntryData.value.nutrition || null,
-        updatedAt: new Date().toISOString()
-      }
-      await healthService.saveUserEntry(currentUser.value.username, entry)
-      await loadUserData()
-      closeModal()
-    }
-
-    const newEntry = () => {
-      showEntryModal.value = true
-      newEntryData.value = { sleep: '', mood: '', activity: '', nutrition: '' }
-    }
-
-    const closeModal = () => {
-      showEntryModal.value = false
-    }
-
-    const viewCharts = () => {
-      router.push('/health-charts')
-    }
-
-    const viewHistory = () => {
-      router.push('/history')
-    }
-
-    const getTodayData = (type) => {
-      const today = new Date().toISOString().split("T")[0]
-      const todayEntry = userEntries.value.find(e => e.date === today)
-      if (!todayEntry) return null
-      switch (type) {
-        case 'sleep': return todayEntry.sleep ? `${todayEntry.sleep}h` : null
-        case 'mood': return todayEntry.mood ? `${todayEntry.mood}/10` : null
-        case 'activity': return todayEntry.activity ? `${todayEntry.activity} min` : null
-        case 'nutrition': return todayEntry.nutrition || null
-        default: return null
-      }
-    }
-
-    const recentEntries = computed(() => {
-      return [...userEntries.value]
-        .sort((a, b) => new Date(b.date) - new Date(a.date))
-        .slice(0, 5)
-    })
-
-    const formatDate = (date) => {
-      return new Date(date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
-    }
-
-    return {
-      currentUser,
-      showEntryModal,
-      newEntryData,
-      userEntries,
-      newEntry,
-      closeModal,
-      saveEntry,
-      recentEntries,
-      getTodayData,
-      viewCharts,
-      viewHistory,
-      formatDate
-    }
+    return useHomePage()
   }
 }
 </script>
 
+<style scoped>
+  @import '@/assets/CSS/HomePage.css';
+</style>

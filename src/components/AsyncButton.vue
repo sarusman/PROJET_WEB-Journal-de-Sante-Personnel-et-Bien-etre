@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import BaseButton from './BaseButton.vue'; // Car c'est la meme structure
+import BaseButton from './BaseButton.vue';
 
 export default {
   name: 'AsyncButton',
@@ -27,7 +27,7 @@ export default {
   methods: {
     handleClick() {
       this.isPending = true;
-      new Promise(resolve => setTimeout(resolve, 2000)) // on attend 2 secondes 
+      new Promise(resolve => setTimeout(resolve, 2000))
         .finally(() => { 
           this.isPending = false;
         });
